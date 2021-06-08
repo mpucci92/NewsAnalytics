@@ -1,3 +1,5 @@
+# FINAL #
+
 class APISearch:
     """
     API Used to perform general searches
@@ -149,7 +151,7 @@ class APISearch:
 
 class NewsVolumeQuery:
 
-    def tweetVolumeQuery(tickers, start_date, end_date, sort_field, sort_order):
+    def tweetVolumeQuery(self,tickers, start_date, end_date, sort_field, sort_order):
         query = {
             "query": {
                 "bool": {
@@ -164,7 +166,7 @@ class NewsVolumeQuery:
 
         return query
 
-    def newsVolumeQuery(tickers, start_date, end_date, sort_field, sort_order):
+    def newsVolumeQuery(self,tickers, start_date, end_date, sort_field, sort_order):
         query = {
             "query": {
                 "bool": {
@@ -176,5 +178,93 @@ class NewsVolumeQuery:
             },
             "sort": [{f"{sort_field}": {"order": f"{sort_order}"}}]
         }
+
+        return query
+
+    def newsAggQuery(self,index,tickers,start_date, end_date):
+
+        if index == 'news':
+
+            query = {
+                "query": {
+                    "bool": {
+                        "filter": [
+                            {"term": {"tickers": f"{tickers}"}},
+                            {"range": {"published_datetime": {"gte": f"{start_date}", "lte": f"{end_date}"}}}
+                        ]
+                    }
+                },
+                "aggs": {
+                    "ticker_counts": {
+                        "terms": {
+                            "field": "tickers",
+                            "size": 1
+                        }
+                    }
+                }
+            }
+
+        elif index == 'tweets':
+            query = {
+                "query": {
+                    "bool": {
+                        "filter": [
+                            {"term": {"cashtags": f"{tickers}"}},
+                            {"range": {"timestamp": {"gte": f"{start_date}", "lte": f"{end_date}"}}}
+                        ]
+                    }
+                },
+                "aggs": {
+                    "ticker_counts": {
+                        "terms": {
+                            "field": "cashtags",
+                            "size": 1
+                        }
+                    }
+                }
+            }
+
+        return query
+
+    def allTickersQuery(self,index, start_date, end_date):
+
+        if index == 'news':
+
+            query = {
+                "query": {
+                    "bool": {
+                        "filter": [
+                            {"range": {"published_datetime": {"gte": f"{start_date}", "lte": f"{end_date}"}}}
+                        ]
+                    }
+                },
+                "aggs": {
+                    "ticker_counts": {
+                        "terms": {
+                            "field": "tickers",
+                            "size": 10000
+                        }
+                    }
+                }
+            }
+
+        elif index == 'tweets':
+            query = {
+                "query": {
+                    "bool": {
+                        "filter": [
+                            {"range": {"timestamp": {"gte": f"{start_date}", "lte": f"{end_date}"}}}
+                        ]
+                    }
+                },
+                "aggs": {
+                    "ticker_counts": {
+                        "terms": {
+                            "field": "cashtags",
+                            "size": 10000
+                        }
+                    }
+                }
+            }
 
         return query

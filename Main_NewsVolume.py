@@ -40,7 +40,7 @@ index = 'news'
 if __name__ == '__main__':
 
     screeners = [
-        "most_actives",
+        #"most_actives",
         "day_losers",
         "day_gainers"
     ]
@@ -134,16 +134,16 @@ if __name__ == '__main__':
 
         text_file.write("<br>")
         text_file.write("<br>")
-        text_file.write("News Index --- Rate of Change (DoD)")
-        text_file.write("<br>")
-        stats = StatsDataStructure()
-        text_file.write(StatsDataStructure.tickerRateOfChange(stats, 'news', tickersWithData, 5, "1 day", customDate=None,
-                                              customInterval=None).to_html())
-
-        text_file.write("Tweets Index --- Rate of Change (DoD)")
-        text_file.write("<br>")
-        text_file.write(StatsDataStructure.tickerRateOfChange(stats, 'tweets', tickersWithData, 5, "1 day", customDate=None,
-                                              customInterval=None).to_html())
+        # text_file.write("News Index --- Rate of Change (DoD)")
+        # text_file.write("<br>")
+        # stats = StatsDataStructure()
+        # text_file.write(StatsDataStructure.tickerRateOfChange(stats, 'news', tickersWithData, 5, "1 day", customDate=None,
+        #                                       customInterval=None).to_html())
+        #
+        # text_file.write("Tweets Index --- Rate of Change (DoD)")
+        # text_file.write("<br>")
+        # text_file.write(StatsDataStructure.tickerRateOfChange(stats, 'tweets', tickersWithData, 5, "1 day", customDate=None,
+        #                                       customInterval=None).to_html())
 
         text_file.close()
 
